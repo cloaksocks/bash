@@ -22,10 +22,10 @@
 
 Скрипты для работы с настройками ECH (Encrypted Client Hello) для доменов в аккаунтах Cloudflare.
 
-1. **cf_creds.csv** — CloudFlare credentials в формате `email,GlobalAPI_ключ`.
-2. **cf_ech_check_status.sh** — скрипт для проверки статуса ECH на доменах аккаунта Cloudflare.
-3. **cf_ech_disable_account.sh** — скрипт для отключения ECH на доменах одного аккаунта.
-4. **cf_ech_disable_bulk.sh** — скрипт для отключения ECH на доменах всех аккаунтов, указанных в `cf_creds.csv`.
+1. [**cf_creds.csv**](https://github.com/cloaksocks/bash/blob/main/cf_creds.csv) — CloudFlare credentials в формате `email,GlobalAPI_ключ`.
+2. [**cf_ech_check_status.sh**](https://github.com/cloaksocks/bash/blob/main/cf_ech_check_status.sh) — скрипт для проверки статуса ECH на доменах аккаунта Cloudflare.
+3. [**cf_ech_disable_account.sh**](https://github.com/cloaksocks/bash/blob/main/cf_ech_disable_account.sh) — скрипт для отключения ECH на доменах одного аккаунта.
+4. [**cf_ech_disable_bulk.sh**](https://github.com/cloaksocks/bash/blob/main/cf_ech_disable_bulk.sh) — скрипт для отключения ECH на доменах всех аккаунтов, указанных в `cf_creds.csv`.
 5. **reports/** — отчёты об аккаунтах, создаётся скриптом.
 
 **Инструкция по использованию**
