@@ -23,9 +23,6 @@ RESPONSE=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones" \
     -H "X-Auth-Key: ${AUTH_KEY}" \
     -H "Content-Type: application/json")
 
-# Логирование ответа
-echo "Ответ от Cloudflare для аккаунта ${AUTH_EMAIL}: $RESPONSE"
-
 # Проверка на ошибку в запросе
 ERROR_CODE=$(echo "$RESPONSE" | jq -r '.errors[0].code')
 ERROR_MESSAGE=$(echo "$RESPONSE" | jq -r '.errors[0].message')
@@ -53,8 +50,6 @@ for DOMAIN in $DOMAINS; do
     ZONE_ID=$(echo "$RESPONSE" | jq -r --arg DOMAIN "$DOMAIN" '.result[] | select(.name == $DOMAIN) | .id')
 
     if [ -n "$ZONE_ID" ]; then
-        echo "Найден zone_id для домена ${DOMAIN}: ${ZONE_ID}"
-
         # Получение статуса ECH
         ECH_STATUS=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/settings/ech" \
             -H "X-Auth-Email: ${AUTH_EMAIL}" \
