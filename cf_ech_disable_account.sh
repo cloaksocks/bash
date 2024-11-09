@@ -58,7 +58,6 @@ for DOMAIN in $DOMAINS; do
             -H "Content-Type: application/json" | jq -r '.result.value')
 
         echo "ECH статус для домена ${DOMAIN}: ${ECH_STATUS}"
-        echo "${AUTH_EMAIL},${DOMAIN},${ZONE_ID},${ECH_STATUS}" >> "$REPORT_FILE"
 
         # Если ECH включен, отключаем его
         if [ "$ECH_STATUS" == "on" ]; then
@@ -73,10 +72,14 @@ for DOMAIN in $DOMAINS; do
             ECH_NEW_STATUS=$(echo "$DISABLE_ECH" | jq -r '.result.value')
             if [ "$ECH_NEW_STATUS" == "off" ]; then
                 echo "ECH успешно отключен для домена ${DOMAIN}"
+                ECH_STATUS="off"
             else
                 echo "Не удалось отключить ECH для домена ${DOMAIN}"
             fi
         fi
+
+        # Записываем актуальный статус в отчет
+        echo "${AUTH_EMAIL},${DOMAIN},${ZONE_ID},${ECH_STATUS}" >> "$REPORT_FILE"
     else
         echo "zone_id для домена ${DOMAIN} не найден"
         echo "${AUTH_EMAIL},${DOMAIN},N/A,error" >> "$REPORT_FILE"
