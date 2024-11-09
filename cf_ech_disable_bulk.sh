@@ -62,6 +62,17 @@ while IFS=',' read -r AUTH_EMAIL AUTH_KEY; do
 
             echo "ECH статус для домена ${DOMAIN}: ${ECH_STATUS}"
             echo "${AUTH_EMAIL},${DOMAIN},${ZONE_ID},${ECH_STATUS}" >> "$REPORT_FILE"
+
+            # Если ECH включен, отключаем его
+            if [ "$ECH_STATUS" == "on" ]; then
+                echo "Отключение ECH для домена ${DOMAIN}"
+                curl -s -X PATCH "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/settings/ech" \
+                    -H "X-Auth-Email: ${AUTH_EMAIL}" \
+                    -H "X-Auth-Key: ${AUTH_KEY}" \
+                    -H "Content-Type: application/json" \
+                    --data '{"id":"ech","value":"off"}' > /dev/null
+                echo "ECH отключен для домена ${DOMAIN}"
+            fi
         else
             echo "zone_id для домена ${DOMAIN} не найден"
             echo "${AUTH_EMAIL},${DOMAIN},N/A,error" >> "$REPORT_FILE"
