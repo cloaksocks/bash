@@ -20,13 +20,13 @@
 
 ### Cloudflare disable ECH scripts
 
-Этот набор скриптов и файлов предназначен для работы с настройками ECH (Encrypted Client Hello) для доменов в аккаунтах Cloudflare.
+Скрипты для работы с настройками ECH (Encrypted Client Hello) для доменов в аккаунтах Cloudflare.
 
-1. **cf_ech_check_status.sh** — скрипт для проверки статуса ECH на доменах аккаунта Cloudflare.
-2. **cf_ech_disable_account.sh** — скрипт для отключения ECH на доменах одного аккаунта.
-3. **cf_ech_disable_bulk.sh** — скрипт для отключения ECH на доменах всех аккаунтов, указанных в `cf_creds.csv`.
-4. **cf_creds.csv** — файл для хранения учетных данных аккаунтов Cloudflare (email и API ключ).
-5. **reports/** — директория для хранения отчетов, генерируемых скриптами, создаётся скриптами.
+1. **cf_creds.csv** — CloudFlare credentials в формате `email,GlobalAPI_ключ`.
+2. **cf_ech_check_status.sh** — скрипт для проверки статуса ECH на доменах аккаунта Cloudflare.
+3. **cf_ech_disable_account.sh** — скрипт для отключения ECH на доменах одного аккаунта.
+4. **cf_ech_disable_bulk.sh** — скрипт для отключения ECH на доменах всех аккаунтов, указанных в `cf_creds.csv`.
+5. **reports/** — отчёты об аккаунтах, создаётся скриптом.
 
 **Инструкция по использованию**
 
