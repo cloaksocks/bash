@@ -61,17 +61,30 @@ while IFS=',' read -r AUTH_EMAIL AUTH_KEY; do
                 -H "Content-Type: application/json" | jq -r '.result.value')
 
             echo "ECH статус для домена ${DOMAIN}: ${ECH_STATUS}"
-            echo "${AUTH_EMAIL},${DOMAIN},${ZONE_ID},${ECH_STATUS}" >> "$REPORT_FILE"
 
             # Если ECH включен, отключаем его
             if [ "$ECH_STATUS" == "on" ]; then
                 echo "Отключение ECH для домена ${DOMAIN}"
-                curl -s -X PATCH "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/settings/ech" \
+                DISABLE_ECH_RESPONSE=$(curl -s -X PATCH "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/settings/ech" \
                     -H "X-Auth-Email: ${AUTH_EMAIL}" \
                     -H "X-Auth-Key: ${AUTH_KEY}" \
                     -H "Content-Type: application/json" \
-                    --data '{"id":"ech","value":"off"}' > /dev/null
-                echo "ECH отключен для домена ${DOMAIN}"
+                    --data '{"id":"ech","value":"off"}')
+                
+                # Получаем обновленный статус
+                UPDATED_ECH_STATUS=$(echo "$DISABLE_ECH_RESPONSE" | jq -r '.result.value')
+
+                if [ "$UPDATED_ECH_STATUS" == "off" ]; then
+                    echo "ECH успешно отключен для домена ${DOMAIN}"
+                else
+                    echo "Ошибка отключения ECH для домена ${DOMAIN}"
+                fi
+                
+                # Записываем обновленный статус в отчёт
+                echo "${AUTH_EMAIL},${DOMAIN},${ZONE_ID},${UPDATED_ECH_STATUS}" >> "$REPORT_FILE"
+            else
+                # Если ECH не включен, записываем текущий статус
+                echo "${AUTH_EMAIL},${DOMAIN},${ZONE_ID},${ECH_STATUS}" >> "$REPORT_FILE"
             fi
         else
             echo "zone_id для домена ${DOMAIN} не найден"
