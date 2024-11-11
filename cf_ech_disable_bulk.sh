@@ -72,7 +72,10 @@ while IFS=',' read -r AUTH_EMAIL AUTH_KEY; do
                     --data '{"id":"ech","value":"off"}')
                 
                 # Получаем обновленный статус
-                UPDATED_ECH_STATUS=$(echo "$DISABLE_ECH_RESPONSE" | jq -r '.result.value')
+                UPDATED_ECH_STATUS=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/settings/ech" \
+                    -H "X-Auth-Email: ${AUTH_EMAIL}" \
+                    -H "X-Auth-Key: ${AUTH_KEY}" \
+                    -H "Content-Type: application/json" | jq -r '.result.value')
 
                 if [ "$UPDATED_ECH_STATUS" == "off" ]; then
                     echo "ECH успешно отключен для домена ${DOMAIN}"
